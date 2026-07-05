@@ -1,12 +1,13 @@
 const express = require("express");
 const contacts = require("../controllers/contact.controller");
+const { requireRole } = require("../middlewares/role.middleware");
 
 const router = express.Router();
 
 router.route("/")
     .get(contacts.findAll)
     .post(contacts.create)
-    .delete(contacts.deleteAll);
+    .delete(requireRole(["admin"]), contacts.deleteAll);
 
 router.route("/favorite")
     .get(contacts.findAllFavorite);
@@ -14,6 +15,6 @@ router.route("/favorite")
 router.route("/:id")
     .get(contacts.findOne)
     .put(contacts.update)
-    .delete(contacts.delete);
+    .delete(requireRole(["admin"]), contacts.delete);
 
 module.exports = router;

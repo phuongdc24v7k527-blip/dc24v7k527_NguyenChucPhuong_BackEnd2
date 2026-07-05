@@ -6,6 +6,7 @@ class ContactService {
     this.Contact = client.db().collection("contacts");
   }
   // Dinh nghia cac phuong thuc truy xuat CSDL su dung mongoDB API
+
   extractContactData(payload) {
     const contact = {
       name: payload.name,
@@ -13,13 +14,16 @@ class ContactService {
       address: payload.address,
       phone: payload.phone,
       favorite: payload.favorite,
+      hasHobbies: payload.hasHobbies, // Trường mới: Xác định có sở thích hay không
+      hobbies: payload.hobbies, // Trường mới: Mảng chứa các sở thích được chọn
     };
-    // Remove undefined fields
+    // Loại bỏ các trường bị undefined (không có dữ liệu)
     Object.keys(contact).forEach(
       (key) => contact[key] === undefined && delete contact[key],
     );
     return contact;
   }
+  /////////
 
   async create(payload) {
     const contact = this.extractContactData(payload);
